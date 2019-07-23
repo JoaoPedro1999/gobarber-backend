@@ -41,6 +41,8 @@ class SessionController {
 
     const { id, name, avatar, provider } = user;
 
+    console.log({ id, name, avatar, provider });
+
     return res.json({
       user: {
         id,
@@ -49,7 +51,7 @@ class SessionController {
         provider,
         avatar,
       },
-      token: jwt.sign({ id }, authConfig.secret, {
+      token: jwt.sign({ id }, process.env.APP_SECRET, {
         expiresIn: authConfig.expiresIn,
       }),
     });
