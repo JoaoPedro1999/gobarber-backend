@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 
 import User from '../models/User';
 import File from '../models/File';
-import authSecret from '../../config/auth';
+import authConfig from '../../config/auth';
 
 class SessionController {
   async store(req, res) {
@@ -35,11 +35,11 @@ class SessionController {
       return res.status(401).json({ error: 'User not found' });
     }
 
-    if (!(await user.checkpassword(password))) {
+    if (!(await user.checkPassword(password))) {
       return res.status(401).json({ error: 'Password does not match' });
     }
 
-    const { id, name, provider, avatar } = user;
+    const { id, name, avatar, provider } = user;
 
     return res.json({
       user: {
@@ -49,8 +49,8 @@ class SessionController {
         provider,
         avatar,
       },
-      token: jwt.sign({ id }, authSecret.secret, {
-        expiresIn: authSecret.expiresIn,
+      token: jwt.sign({ id }, authConfig.secret, {
+        expiresIn: authConfig.expiresIn,
       }),
     });
   }
